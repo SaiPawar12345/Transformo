@@ -1,0 +1,429 @@
+/* src/styles/Dashboard.css */
+
+/* Theme Variables */
+:root {
+  /* Light theme variables */
+  --light-bg-primary: #ffffff;
+  --light-bg-secondary: #f8f9fa;
+  --light-bg-tertiary: #e9ecef;
+  --light-text-primary: #2c3e50;
+  --light-text-secondary: #6c757d;
+  --light-border: rgba(0, 0, 0, 0.1);
+  --light-overlay: rgba(0, 0, 0, 0.75);
+
+  /* Dark theme variables */
+  --dark-bg-primary: #1a1a1a;
+  --dark-bg-secondary: #2d2d2d;
+  --dark-bg-tertiary: #374151;
+  --dark-text-primary: #e1e1e1;
+  --dark-text-secondary: #9ca3af;
+  --dark-border: rgba(255, 255, 255, 0.1);
+  --dark-overlay: rgba(0, 0, 0, 0.85);
+}
+
+/* Apply theme variables */
+.dashboard-container {
+  padding: 20px;
+  min-height: 100vh;
+  transition: all 0.3s ease;
+}
+
+.dashboard-container.light {
+  background-color: var(--light-bg-primary);
+  color: var(--light-text-primary);
+}
+
+.dashboard-container.dark {
+  background-color: var(--dark-bg-primary);
+  color: var(--dark-text-primary);
+}
+
+.file-upload-container {
+  margin-bottom: 30px;
+}
+
+.file-list-container {
+  margin-top: 20px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--dark-border);
+  transition: all 0.2s ease;
+}
+
+.file-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.upload-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.file-viewer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: overlay-appear 0.3s ease-out;
+}
+
+.light .file-viewer-overlay {
+  background: var(--light-overlay);
+}
+
+.dark .file-viewer-overlay {
+  background: var(--dark-overlay);
+}
+
+.file-viewer-popup {
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: popup-appear 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.light .file-viewer-popup {
+  background: linear-gradient(145deg, var(--light-bg-primary), var(--light-bg-secondary));
+  border: 1px solid var(--light-border);
+}
+
+.dark .file-viewer-popup {
+  background: linear-gradient(145deg, var(--dark-bg-primary), var(--dark-bg-secondary));
+  border: 1px solid var(--dark-border);
+}
+
+.popup-header {
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.light .popup-header {
+  background: linear-gradient(145deg, var(--light-bg-secondary), var(--light-bg-tertiary));
+  border-bottom: 1px solid var(--light-border);
+}
+
+.dark .popup-header {
+  background: linear-gradient(145deg, var(--dark-bg-secondary), var(--dark-bg-primary));
+  border-bottom: 1px solid var(--dark-border);
+}
+
+.popup-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.light .popup-header h3 {
+  color: var(--light-text-primary);
+}
+
+.dark .popup-header h3 {
+  color: var(--dark-text-primary);
+}
+
+.popup-content {
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 500px;
+}
+
+.light .popup-content {
+  background: var(--light-bg-primary);
+  color: var(--light-text-primary);
+}
+
+.dark .popup-content {
+  background: var(--dark-bg-primary);
+  color: var(--dark-text-primary);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -8px;
+}
+
+.light .close-button {
+  color: var(--light-text-secondary);
+}
+
+.dark .close-button {
+  color: var(--dark-text-secondary);
+}
+
+.light .close-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--light-text-primary);
+}
+
+.dark .close-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--dark-text-primary);
+}
+
+.popup-actions {
+  padding: 16px 24px;
+  background: var(--dark-bg-primary);
+  border-top: 1px solid var(--dark-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.action-button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.light .primary-button {
+  background: #007bff;
+  color: white;
+}
+
+.dark .primary-button {
+  background: #2563eb;
+  color: white;
+}
+
+.light .secondary-button {
+  background: var(--light-bg-tertiary);
+  color: var(--light-text-primary);
+}
+
+.dark .secondary-button {
+  background: var(--dark-bg-tertiary);
+  color: var(--dark-text-primary);
+}
+
+.light .danger-button {
+  background: #dc3545;
+  color: white;
+}
+
+.dark .danger-button {
+  background: #dc2626;
+  color: white;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.preview-pdf {
+  width: 100%;
+  height: 70vh;
+  border: none;
+  border-radius: 8px;
+}
+
+.unsupported-format {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  border-radius: 12px;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 500px;
+}
+
+.light .unsupported-format {
+  background: var(--light-bg-secondary);
+}
+
+.dark .unsupported-format {
+  background: var(--dark-bg-secondary);
+}
+
+.share-input-container {
+  margin: 20px 0;
+}
+
+.share-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--dark-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: var(--dark-bg-secondary);
+  color: var(--dark-text-primary);
+}
+
+.share-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+.share-input::placeholder {
+  color: #6b7280;
+}
+
+.user-preview {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--dark-bg-secondary);
+  border-radius: 8px;
+  color: var(--dark-text-primary);
+  border: 1px solid var(--dark-border);
+}
+
+.delete-confirmation {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.file-details {
+  margin: 20px 0;
+  padding: 16px;
+  background: var(--dark-bg-secondary);
+  border-radius: 8px;
+  line-height: 1.6;
+  border: 1px solid var(--dark-border);
+}
+
+.warning-message {
+  color: #ef4444;
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+.warning-message p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Scrollbar styles */
+.light ::-webkit-scrollbar-track {
+  background: var(--light-bg-secondary);
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: var(--light-text-secondary);
+  border: 2px solid var(--light-bg-secondary);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: var(--dark-bg-primary);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--dark-bg-tertiary);
+  border: 2px solid var(--dark-bg-primary);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-text-secondary);
+}
+
+/* Animations */
+@keyframes overlay-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popup-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Ensure the dashboard doesn't scroll when popup is open */
+.dashboard-container {
+  position: relative;
+}
+
+body.popup-open {
+  overflow: hidden;
+}
+
+/* Dark scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}

@@ -1,0 +1,90 @@
+.text-processor-2 {
+  padding: 50px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.text-processor-2-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.text-processor-2-content {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.text-input-area-2 {
+  width: 100%;
+  min-height: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  color: white;
+  margin-bottom: 20px;
+  resize: vertical;
+}
+
+.controls-section-2 {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.process-button-2 {
+  background: linear-gradient(90.21deg, #AA367C -5.91%, #4A2FBD 111.58%);
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.process-button-2:hover {
+  opacity: 0.9;
+}
+
+.process-button-2:disabled {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
+}
+
+.result-section-2 {
+  margin-top: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.result-text-2 {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.options-section-2 {
+  margin: 20px 0;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.option-select-2 {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  padding: 8px 15px;
+  color: white;
+  cursor: pointer;
+}
+
+.option-select-2 option {
+  background-color: #121212;
+  color: white;
+}

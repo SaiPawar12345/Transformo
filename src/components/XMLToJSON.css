@@ -1,0 +1,211 @@
+.xml-to-json-container_1 {
+    min-height: 100vh;
+    width: 100%;
+    padding: 2rem;
+    background: linear-gradient(rgba(26, 26, 26, 0.95), rgba(26, 26, 26, 0.95)),
+              url('../assets/img/banner-bg.png') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    padding-top: 100px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.xml-to-json-content {
+    width: 100%;
+    max-width: 800px;
+    background: rgba(40, 40, 43, 0.7);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    backdrop-filter: blur(8px);
+}
+
+.xml-to-json-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.xml-to-json-header h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #b829e3;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(184, 41, 227, 0.5);
+}
+
+.xml-to-json-header p {
+    color: #fff;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.xml-to-json-textarea_3 {
+    border: 2px dashed rgba(184, 41, 227, 0.5);
+    border-radius: 12px;
+    padding: 4rem 2rem;
+    text-align: center;
+    background: rgba(40, 40, 43, 0.5);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.xml-to-json-textarea_3:hover {
+    background: rgba(40, 40, 43, 0.7);
+    border-color: #b829e3;
+}
+
+.xml-to-json-textarea_3 .icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.xml-to-json-textarea_3 label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    cursor: pointer;
+}
+
+.xml-to-json-textarea_3 svg {
+    color: #b829e3;
+    opacity: 0.9;
+    transition: transform 0.3s ease;
+}
+
+.xml-to-json-textarea_3:hover svg {
+    transform: translateY(-5px);
+}
+
+.xml-to-json-textarea_3 p {
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.xml-to-json-file-input {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.xml-to-json-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.xml-to-json-button_4 {
+    padding: 1rem 3rem;
+    background-color: #b829e3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+.xml-to-json-button_4:hover:not(:disabled) {
+    opacity: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(184, 41, 227, 0.3);
+}
+
+.xml-to-json-button_4:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.xml-to-json-error-message {
+    color: #ff4d4d;
+    background: rgba(255, 77, 77, 0.1);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    text-align: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.xml-to-json-output_5 {
+    margin-top: 2rem;
+    background: rgba(40, 40, 43, 0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.xml-to-json-output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.xml-to-json-output-header h3 {
+    color: #fff;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.xml-to-json-download-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #b829e3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.xml-to-json-download-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(184, 41, 227, 0.3);
+}
+
+.xml-to-json-json-output {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #fff;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

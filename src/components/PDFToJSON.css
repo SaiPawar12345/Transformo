@@ -1,0 +1,207 @@
+.converter-container {
+  min-height: 100vh;
+  width: 100%;
+  padding: 2rem;
+  background: linear-gradient(rgba(26, 26, 26, 0.95), rgba(26, 26, 26, 0.95)),
+              url('../assets/img/banner-bg.png') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  padding-top: 100px;
+}
+
+.converter-content {
+  max-width: 800px;
+  margin: 0 auto;
+  background: rgba(40, 40, 43, 0.7);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+.converter-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.converter-header h2 {
+  font-size: 2.5rem;
+  color: #b829e3;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(184, 41, 227, 0.5);
+}
+
+.converter-header p {
+  color: #fff;
+  opacity: 0.9;
+}
+
+.drop-zone {
+  border: 2px dashed rgba(184, 41, 227, 0.5);
+  border-radius: 12px;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: rgba(40, 40, 43, 0.5);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.drop-zone:hover {
+  background: rgba(40, 40, 43, 0.7);
+  border-color: #b829e3;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.file-input {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.icon-container svg {
+  color: #b829e3;
+  opacity: 0.9;
+  transition: transform 0.3s ease;
+}
+
+.drop-zone:hover svg {
+  transform: translateY(-5px);
+}
+
+.icon-container p {
+  font-size: 1.1rem;
+  color: #fff;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.convert-button {
+  padding: 1rem 3rem;
+  background-color: #b829e3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
+.convert-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  opacity: 1;
+  box-shadow: 0 5px 15px rgba(184, 41, 227, 0.3);
+}
+
+.convert-button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.error-message {
+  color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.output-container {
+  margin-top: 2rem;
+  background: rgba(40, 40, 43, 0.5);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.output-header h3 {
+  color: #fff;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.download-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #b829e3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.download-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(184, 41, 227, 0.3);
+}
+
+.json-output {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #fff;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .converter-content {
+    padding: 1.5rem;
+  }
+
+  .converter-header h2 {
+    font-size: 2rem;
+  }
+
+  .drop-zone {
+    padding: 2rem 1rem;
+    min-height: 200px;
+  }
+
+  .convert-button {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+  }
+}

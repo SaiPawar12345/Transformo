@@ -1,0 +1,169 @@
+.doc-to-pdf-container_1 {
+  min-height: 100vh;
+  width: 100%;
+  padding: 2rem;
+  background: linear-gradient(rgba(26, 26, 26, 0.95), rgba(26, 26, 26, 0.95)),
+              url('../assets/img/banner-bg.png') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  padding-top: 100px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.merge-content {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(40, 40, 43, 0.7);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  backdrop-filter: blur(8px);
+}
+
+.merge-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.doc-to-pdf-header_2 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #b829e3;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(184, 41, 227, 0.5);
+}
+
+.merge-header p {
+  color: #fff;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.drop-zone {
+  border: 2px dashed rgba(184, 41, 227, 0.5);
+  border-radius: 12px;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: rgba(40, 40, 43, 0.5);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.drop-zone:hover {
+  background: rgba(40, 40, 43, 0.7);
+  border-color: #b829e3;
+}
+
+.drop-zone .icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.drop-zone label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.drop-zone svg {
+  color: #b829e3;
+  opacity: 0.9;
+  transition: transform 0.3s ease;
+}
+
+.drop-zone:hover svg {
+  transform: translateY(-5px);
+}
+
+.drop-zone p {
+  font-size: 1.1rem;
+  color: #fff;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.doc-to-pdf-input_3 {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.doc-to-pdf-button_4 {
+  width: 100%;
+  padding: 1rem 2rem;
+  background-color: #b829e3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 1rem;
+  opacity: 0.9;
+}
+
+.doc-to-pdf-button_4:hover:not(:disabled) {
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(184, 41, 227, 0.3);
+}
+
+.doc-to-pdf-button_4:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.doc-to-pdf-progress-container_5 {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+
+.doc-to-pdf-progress-fill_6 {
+  height: 100%;
+  background: linear-gradient(90deg, #b829e3, #4A2FBD);
+  transition: width 0.3s ease-in-out;
+}
+
+.doc-to-pdf-error_7 {
+  color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

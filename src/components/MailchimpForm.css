@@ -1,0 +1,31 @@
+.mailchimp-form {
+  margin-top: 15px;
+}
+
+.mailchimp-form .alert {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border-radius: 4px;
+}
+
+.mailchimp-form .alert-success {
+  background-color: rgba(40, 167, 69, 0.2);
+  border: 1px solid #28a745;
+  color: #28a745;
+}
+
+.mailchimp-form .alert-danger {
+  background-color: rgba(220, 53, 69, 0.2);
+  border: 1px solid #dc3545;
+  color: #dc3545;
+}
+
+.mailchimp-form .alert-warning {
+  background-color: rgba(255, 193, 7, 0.2);
+  border: 1px solid #ffc107;
+  color: #ffc107;
+}
+
+.mailchimp-form .newsletter-bx {
+  margin-top: 20px;
+}
