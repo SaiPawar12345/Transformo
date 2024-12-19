@@ -1,5 +1,4 @@
-/* General Styles */
-.login-container {
+.signup-container {
   max-width: 450px;
   width: 90%;
   background: #F8F9FD;
@@ -11,7 +10,7 @@
   margin: 40px auto;
 }
 
-.login-heading {
+.signup-heading {
   text-align: center;
   font-weight: 900;
   font-size: 36px;
@@ -19,11 +18,11 @@
   margin-bottom: 30px;
 }
 
-.login-form {
+.signup-form {
   margin-top: 25px;
 }
 
-.login-form .input-field {
+.signup-form .input-field {
   width: 100%;
   background: white;
   border: 2px solid #e8e8e8;
@@ -38,13 +37,13 @@
   position: relative;
 }
 
-.login-form .input-field::placeholder {
+.signup-form .input-field::placeholder {
   color: #aaa;
   font-size: 15px;
   font-weight: 500;
 }
 
-.login-form .input-field:focus {
+.signup-form .input-field:focus {
   outline: none;
   border-color: #12B1D1;
   box-shadow: 0 8px 15px rgba(18, 177, 209, 0.15);
@@ -53,30 +52,13 @@
   color: #000000;
 }
 
-.login-form .input-field:hover {
+.signup-form .input-field:hover {
   border-color: #12B1D1;
   box-shadow: 0 5px 10px rgba(18, 177, 209, 0.1);
   background-color: white;
 }
 
-.login-form .forgot-password {
-  display: block;
-  margin-top: 15px;
-  margin-left: 15px;
-}
-
-.login-form .forgot-password a {
-  font-size: 13px;
-  color: #0099ff;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.login-form .forgot-password a:hover {
-  color: #007acc;
-}
-
-.login-form .submit-btn {
+.signup-form .submit-btn {
   display: block;
   width: 100%;
   font-weight: bold;
@@ -92,41 +74,21 @@
   cursor: pointer;
 }
 
-.login-form .submit-btn:hover {
+.signup-form .submit-btn:hover {
   transform: scale(1.03);
   box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 23px 10px -20px;
 }
 
-.login-form .submit-btn:active {
+.signup-form .submit-btn:active {
   transform: scale(0.95);
   box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 15px 10px -10px;
 }
 
-.signup-link {
-  text-align: center;
-  margin-top: 25px;
-  font-size: 15px;
-  color: #666;
-}
-
-.signup-link a {
-  color: #12B1D1;
-  text-decoration: none;
-  font-weight: 600;
-  margin-left: 5px;
-  transition: color 0.3s ease;
-}
-
-.signup-link a:hover {
-  color: #0e8fa8;
-  text-decoration: underline;
-}
-
-.social-login {
+.social-signup {
   margin-top: 35px;
 }
 
-.social-login .title {
+.social-signup .title {
   display: block;
   text-align: center;
   font-size: 14px;
@@ -134,7 +96,7 @@
   margin-bottom: 15px;
 }
 
-.social-login .social-icons {
+.social-signup .social-icons {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -142,7 +104,7 @@
   margin-top: 15px;
 }
 
-.social-login .social-icons .social-btn {
+.social-signup .social-icons .social-btn {
   background: linear-gradient(45deg, rgb(66, 66, 66) 0%, rgb(112, 112, 112) 100%);
   border: 5px solid white;
   padding: 8px;
@@ -156,27 +118,27 @@
   cursor: pointer;
 }
 
-.social-login .social-icons .google-btn {
+.social-signup .social-icons .google-btn {
   background: linear-gradient(45deg, #4285f4, #0f9d58);
 }
 
-.social-login .social-icons .github-btn {
+.social-signup .social-icons .github-btn {
   background: linear-gradient(45deg, #333, #24292e);
 }
 
-.social-login .social-icons .social-btn svg {
+.social-signup .social-icons .social-btn svg {
   fill: white;
   margin: auto;
   width: 24px;
   height: 24px;
 }
 
-.social-login .social-icons .social-btn:hover {
+.social-signup .social-icons .social-btn:hover {
   transform: scale(1.2);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-.social-login .social-icons .social-btn:active {
+.social-signup .social-icons .social-btn:active {
   transform: scale(0.9);
 }
 
@@ -190,11 +152,6 @@
   text-decoration: none;
   color: #0099ff;
   font-size: 12px;
-  transition: color 0.3s ease;
-}
-
-.terms a:hover {
-  color: #007acc;
 }
 
 .error-message {

@@ -2,56 +2,165 @@
 .banner {
   margin-top: 0;
   padding: 260px 0 100px 0;
-  background-position: top center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  position: relative;
+  background: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.banner::before {
+  content: "";
+  position: absolute;
+  inset: -145%;
+  rotate: -45deg;
+  background-image: 
+    radial-gradient(4px 100px at 0px 235px, #54B4D3, #0000),
+    radial-gradient(4px 100px at 300px 235px, #fff, #0000),
+    radial-gradient(4px 100px at 0px 150px, #54B4D3, #0000),
+    radial-gradient(4px 100px at 300px 150px, #fff, #0000),
+    radial-gradient(4px 100px at 0px 253px, #fff, #0000),
+    radial-gradient(4px 100px at 300px 253px, #54B4D3, #0000),
+    radial-gradient(4px 100px at 0px 204px, #54B4D3, #0000),
+    radial-gradient(4px 100px at 300px 204px, #fff, #0000);
+  background-size:
+    300px 235px,
+    300px 235px,
+    300px 150px,
+    300px 150px,
+    300px 253px,
+    300px 253px,
+    300px 204px,
+    300px 204px;
+  animation: matrix-rain 100s linear infinite;
+  z-index: 0;
+  opacity: 0.3;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+@keyframes matrix-rain {
+  0% {
+    background-position:
+      0px 220px,
+      3px 220px,
+      50px 16px,
+      53px 16px,
+      75px 224px,
+      78px 224px,
+      100px 19px,
+      103px 19px;
+  }
+  to {
+    background-position:
+      0px 3000px,
+      3px 3000px,
+      50px 3000px,
+      53px 3000px,
+      75px 3000px,
+      78px 3000px,
+      100px 3000px,
+      103px 3000px;
+  }
+}
+
+.banner .content {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .banner .tagline {
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  padding: 8px 10px;
-  background: linear-gradient(90.21deg, rgba(170, 54, 124, 0.5) -5.91%, rgba(74, 47, 189, 0.5) 111.58%);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  font-size: 20px;
-  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 10px 20px;
+  background: #54B4D3;
+  font-size: 18px;
+  margin-bottom: 32px;
   display: inline-block;
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(84, 180, 211, 0.3);
+  border: none;
+}
+
+.banner .tagline:hover {
+  background: #3ca3c3;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(84, 180, 211, 0.4);
 }
 
 .banner h1 {
-  font-size: 65px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  line-height: 1;
-  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  font-size: 72px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 32px;
   display: block;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+}
+
+.banner h1:hover {
+  transform: translateY(-2px);
+  text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .banner p {
-  color: #B8B8B8;
-  font-size: 18px;
-  letter-spacing: 0.8px;
-  line-height: 1.5em;
-  width: 96%;
+  position: relative;
+  z-index: 1;
+  color: #666;
+  font-size: 20px;
+  letter-spacing: 0.2px;
+  line-height: 1.7;
+  max-width: 800px;
+  margin-bottom: 48px;
+  transition: all 0.3s ease;
+}
+
+.banner p:hover {
+  transform: translateY(-2px);
 }
 
 .banner button {
-  color: #fff;
-  font-weight: 700;
-  font-size: 20px;
-  margin-top: 60px;
-  letter-spacing: 0.8px;
-  display: flex;
+  position: relative;
+  z-index: 1;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0.3px;
+  display: inline-flex;
   align-items: center;
+  padding: 14px 32px;
+  background: #54B4D3;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(84, 180, 211, 0.3);
 }
 
-.banner button svg {
-  font-size: 25px;
-  margin-left: 10px;
+.banner button:hover {
+  background: #3ca3c3;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(84, 180, 211, 0.4);
+}
+
+.banner button span {
+  font-size: 22px;
+  margin-left: 12px;
   transition: 0.3s ease-in-out;
-  line-height: 1;
+  line-height: 0;
 }
 
-.banner button:hover svg {
-  margin-left: 25px;
+.banner button:hover span {
+  transform: translateX(8px);
 }

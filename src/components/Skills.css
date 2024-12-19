@@ -1,39 +1,88 @@
 /************ Skills Css ************/
 .skill {
-  padding: 0 0 150px 0; /* Increased bottom padding from 50px to 150px */
+  padding: 80px 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
   position: relative;
+  overflow: hidden;
+}
+
+.skill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(65, 88, 208, 0.03) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.skill::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(200, 80, 192, 0.03) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
 }
 
 .skill-bx {
-  background: #151515;
-  border-radius: 64px;
+  background: white;
+  border-radius: 24px;
   text-align: center;
-  padding: 60px 50px;
-  margin-top: -60px;
+  padding: 60px 40px;
+  margin-top: 20px;
+  box-shadow: 0 8px 32px rgba(65, 88, 208, 0.08);
+  border: 1px solid rgba(65, 88, 208, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
 .skill h2 {
-  font-size: 45px;
+  font-size: 42px;
   font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 16px;
 }
 
 .skill p {
-  color: #B8B8B8;
+  color: #718096;
   font-size: 18px;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.2px;
   line-height: 1.5em;
-  margin: 14px 0 75px 0;
+  margin-bottom: 40px;
 }
 
 .skill-slider {
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   position: relative;
 }
 
+.skill-slider .item {
+  padding: 20px;
+}
+
 .skill-slider .item img {
-  width: 50%;
+  width: 60%;
   margin: 0 auto 15px auto;
+  filter: drop-shadow(0 4px 12px rgba(65, 88, 208, 0.1));
+  transition: transform 0.3s ease;
+}
+
+.skill-slider .item img:hover {
+  transform: translateY(-5px);
+}
+
+.skill-slider .item h5 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-top: 16px;
 }
 
 .background-image-left {
@@ -41,5 +90,53 @@
   position: absolute;
   bottom: 0;
   width: 40%;
-  z-index: -4;
+  z-index: 0;
+  opacity: 0.1;
+}
+
+/* Carousel Customization */
+.react-multi-carousel-list {
+  padding: 0 20px;
+}
+
+.react-multi-carousel-dot-list {
+  margin-top: 20px;
+}
+
+.react-multi-carousel-dot button {
+  border-color: rgba(65, 88, 208, 0.2) !important;
+  background: transparent !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin: 0 6px !important;
+  transition: all 0.3s ease;
+}
+
+.react-multi-carousel-dot--active button {
+  background: linear-gradient(90deg, #4158D0, #C850C0) !important;
+  border-color: transparent !important;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 640px) {
+  .skill-bx {
+    padding: 40px 24px;
+    margin: 0 20px;
+  }
+
+  .skill h2 {
+    font-size: 32px;
+  }
+
+  .skill p {
+    font-size: 16px;
+  }
+
+  .skill-slider .item img {
+    width: 80%;
+  }
+
+  .skill-slider .item h5 {
+    font-size: 18px;
+  }
 }

@@ -1,123 +1,179 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { ProjectCard } from "./ProjectCard";
-import projImg1 from "../assets/img/project-img1.png";
-import projImg2 from "../assets/img/project-img2.png";
-import projImg3 from "../assets/img/project-img3.png";
-import projImg4 from "../assets/img/project-img4.png";
-import projImg5 from "../assets/img/project-img5.png";
-import projImg7 from "../assets/img/project-img7.png";
-import projImg9 from "../assets/img/project-img9.png";
-import projImg10 from "../assets/img/project-img10.png";
-import projImg12 from "../assets/img/project-img12.png";
-import projImg13 from "../assets/img/project-img13.png";
-import projImg14 from "../assets/img/project-img14.png";
-import projImg15 from "../assets/img/project-img15.png";
 import colorSharp2 from "../assets/img/color-sharp2.png";
 import 'animate.css';
 import './Projects.css';
 
 export const Projects = () => {
-
-  const projects = [
+  const categories = [
     {
-      title: "PDF to JPG",
-      description: "Convert PDF file to JPG file.",
-      imgUrl: projImg1,
-      route: "/pdf-to-jpg",
+      title: "Convert from PDF",
+      tools: [
+        {
+          title: "PDF to Word",
+          description: "Convert PDFs to Microsoft Word documents (DOCX or DOC).",
+          route: "/pdf-to-word",
+          isHot: true
+        },
+        {
+          title: "PDF to PPT",
+          description: "Convert PDFs to Microsoft PowerPoint documents (PPTX or PPT).",
+          route: "/pdf-to-ppt"
+        },
+        {
+          title: "PDF to Excel",
+          description: "Convert PDFs to Microsoft Excel spreadsheets (XLSX or XLS).",
+          route: "/pdf-to-excel"
+        },
+        {
+          title: "PDF to JPG",
+          description: "Convert PDFs to images (JPG, PNG, BMP, GIF, and TIFF).",
+          route: "/pdf-to-jpg"
+        },
+        {
+          title: "PDF to TXT",
+          description: "Convert PDFs to text files (TXT).",
+          route: "/pdf-to-txt"
+        },
+        {
+          title: "PDF to RTF",
+          description: "Convert PDFs to rich text files (RTF).",
+          route: "/pdf-to-rtf"
+        },
+        {
+          title: "PDF to Pages",
+          description: "Convert PDFs to iWork Pages for macOS or iOS users.",
+          route: "/pdf-to-pages"
+        },
+        {
+          title: "PDF to HTML",
+          description: "Convert PDFs to HTML web pages.",
+          route: "/pdf-to-html"
+        },
+        {
+          title: "PDF to EPUB",
+          description: "Convert PDFs to eBook EPUB files.",
+          route: "/pdf-to-epub"
+        },
+        {
+          title: "PDF to JSON",
+          description: "Convert PDF files to structured JSON format.",
+          route: "/pdf-to-json"
+        },
+        {
+          title: "OCR",
+          description: "Convert scanned PDFs and images to editable files (DOCX, XLSX, PPTX, TXT). OCR support for 20+ languages.",
+          route: "/ocr"
+        }
+      ]
     },
     {
-      title: "JPG to PDF",
-      description: "Convert JPG file to PDF file.",
-      imgUrl: projImg2,
-      route: "/jpg-to-pdf",
+      title: "Convert to PDF",
+      tools: [
+        {
+          title: "JPG to PDF",
+          description: "Convert JPG images to PDF file.",
+          route: "/jpg-to-pdf"
+        },
+        {
+          title: "Word to PDF",
+          description: "Convert Word documents to PDF format.",
+          route: "/word-to-pdf"
+        },
+        {
+          title: "Excel to PDF",
+          description: "Convert Excel spreadsheets to PDF.",
+          route: "/excel-to-pdf"
+        },
+        {
+          title: "PPT to PDF",
+          description: "Convert PowerPoint presentations to PDF.",
+          route: "/ppt-to-pdf"
+        },
+        {
+          title: "JSON to PDF",
+          description: "Convert JSON files to formatted PDF documents.",
+          route: "/json-to-pdf"
+        }
+      ]
     },
     {
-      title: "Speech to Text",
-      description: "Convert Speech to Text.",
-      imgUrl: projImg3,
-      route: "/sp2txt",
+      title: "Edit PDF",
+      tools: [
+        {
+          title: "Merge PDF",
+          description: "Combine multiple PDFs into one document.",
+          route: "/merge-pdf"
+        },
+        {
+          title: "Split PDF",
+          description: "Split PDF into separate files.",
+          route: "/split-pdf"
+        },
+        {
+          title: "Compress PDF",
+          description: "Reduce PDF file size while maintaining quality.",
+          route: "/compress-pdf"
+        }
+      ]
     },
     {
-      title: "Merge PDF",
-      description: "Merge PDFs into a single PDF.",
-      imgUrl: projImg4,
-      route: "/merge-pdf",
-    },
-    {
-      title: "Split PDF",
-      description: "Split PDF into multiple PDFs.",
-      imgUrl: projImg5,
-      route: "/split-pdf",
-    },
-    {
-      title: "JSON to PDF",
-      description: "Convert JSON file to PDF.",
-      imgUrl: projImg9,
-      route: "/json-to-pdf",
-    },
-    {
-      title: "Word Doc to PDF",
-      description: "Convert doc file to PDF file.",
-      imgUrl: projImg7,
-      route: "/word-to-pdf",
-    },
-    {
-      title: "CSV to JSON",
-      description: "Convert PDF file to doc file.",
-      imgUrl: projImg12,
-      route: "/csv-to-json",
-    },
-    {
-      title: "PDF to JSON",
-      description: "Convert PDF file to JSON file.",
-      imgUrl: projImg10,
-      route: "/pdf-to-json",
-    },
-    {
-      title: "JSON to CSV",
-      description: "Convert JSON file to CSV file.",
-      imgUrl: projImg14,
-      route: "/json-to-csv",
-    },
-    {
-      title: "JSON to XML",
-      description: "Convert JSON file to XML file.",
-      imgUrl: projImg15,
-      route: "/json-to-xml",
-    },
-    {
-      title: "XML to JSON",
-      description: "Convert XML file to JSON file.",
-      imgUrl: projImg13,
-      route: "/xml-to-json",
-    },
+      title: "Data Format Conversion",
+      tools: [
+        {
+          title: "JSON to CSV",
+          description: "Convert JSON files to CSV format.",
+          route: "/json-to-csv"
+        },
+        {
+          title: "JSON to XML",
+          description: "Convert JSON files to XML format.",
+          route: "/json-to-xml"
+        },
+        {
+          title: "XML to JSON",
+          description: "Convert XML files to JSON format.",
+          route: "/xml-to-json"
+        },
+        {
+          title: "Speech to Text",
+          description: "Convert audio to text with high accuracy.",
+          route: "/sp2txt"
+        }
+      ]
+    }
   ];
 
   return (
-    <section className="project" id="skillContainer" style={{ backgroundColor: '#ffe6ff', padding: '40px 0' }}>
+    <section className="project" id="skillContainer">
       <Container>
-        <Row>
-          <Col size={12}>
-            <div style={{ backgroundColor: 'black', padding: '20px', borderRadius: '40px', border: '2px solid white' }}>
-              <h2 style={{ color: 'white' }}>Features</h2>
-              <p style={{ color: 'white' }}>OCR feature and data extraction can be done easily and efficiently. Transform feature allows you to quickly and easily convert your PDFs to other file formats.</p>
-              <Row>
-                {
-                  projects.map((project, index) => {
-                    return (
-                      <ProjectCard
-                        key={index}
-                        {...project}
-                      />
-                    )
-                  })
-                }
-              </Row>
-            </div>
-          </Col>
-        </Row>
+        <div className="project-container">
+          <div className="project-header">
+            <h2>All Tools</h2>
+            <p>
+              Everything you need for your document conversion needs in one place. 
+              Simple, fast, and secure.
+            </p>
+          </div>
+          
+          <div className="categories-container">
+            {categories.map((category, idx) => (
+              <div key={idx} className="category-section">
+                <h3 className="category-title">{category.title}</h3>
+                <p className="category-description">
+                  {category.title === "Convert from PDF" && "Save files from PDFs online for free."}
+                </p>
+                <div className="tools-grid">
+                  {category.tools.map((tool, index) => (
+                    <ProjectCard key={index} {...tool} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </Container>
       <img className="background-image-right" src={colorSharp2} alt="Background" />
     </section>
-  )
-}
+  );
+};

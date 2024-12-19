@@ -1,47 +1,39 @@
-import { useState, useEffect } from "react";
-import { Col, Row, Alert } from "react-bootstrap";
+import React, { useState } from 'react';
 import './Newsletter.css';
 
-export const Newsletter = ({ status, message, onValidated }) => {
+export const Newsletter = () => {
   const [email, setEmail] = useState('');
-
-  useEffect(() => {
-    if (status === 'success') clearFields();
-  }, [status])
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    email &&
-    email.indexOf("@") > -1 &&
-    onValidated({
-      EMAIL: email
-    })
-  }
-
-  const clearFields = () => {
+    // Handle newsletter subscription
+    console.log('Newsletter subscription for:', email);
     setEmail('');
-  }
+  };
 
   return (
-      <Col lg={12}>
-        <div className="newsletter-bx wow slideInUp">
-          <Row>
-            <Col lg={12} md={6} xl={5}>
-              <h3>Subscribe to get premium features!<br></br>Never miss latest updates</h3>
-              {status === 'sending' && <Alert>Sending...</Alert>}
-              {status === 'error' && <Alert variant="danger">{message}</Alert>}
-              {status === 'success' && <Alert variant="success">{message}</Alert>}
-            </Col>
-            <Col md={6} xl={7}>
-              <form onSubmit={handleSubmit}>
-                <div className="new-email-bx">
-                  <input value={email} type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
-                  <button type="submit">Submit</button>
-                </div>
-              </form>
-            </Col>
-          </Row>
+    <form className="newsletter-form" onSubmit={handleSubmit}>
+      <div className="newsletter-content">
+        <span className="newsletter-title">Get more updates...</span>
+        <p className="newsletter-description">
+          Sign up for our newsletter and you'll be the first to find out about new features
+        </p>
+      </div>
+      <div className="newsletter-input-group">
+        <div className="newsletter-input-wrapper">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="newsletter-input"
+            placeholder="Mail..."
+            required
+          />
         </div>
-      </Col>
-  )
-}
+        <button type="submit" className="newsletter-button">
+          Subscribe
+        </button>
+      </div>
+    </form>
+  );
+};

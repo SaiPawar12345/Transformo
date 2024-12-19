@@ -1,0 +1,116 @@
+.captcha-container {
+  margin: 20px 0;
+  width: 100%;
+}
+
+.captcha-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background: #f0f0f0;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  border: 2px solid #e8e8e8;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.captcha-text {
+  font-family: 'Courier New', monospace;
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 8px;
+  padding: 10px 20px;
+  background: white;
+  border-radius: 10px;
+  color: #333;
+  text-shadow: 1px 1px 0 #fff,
+               -1px -1px 0 #fff,
+               1px -1px 0 #fff,
+               -1px 1px 0 #fff;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.captcha-text span {
+  display: inline-block;
+  position: relative;
+  margin: 0 2px;
+  color: #000;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: 'Arial', sans-serif;
+}
+
+.captcha-text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.1) 45%, 
+    rgba(255, 255, 255, 0.5) 50%, 
+    rgba(255, 255, 255, 0.1) 55%, 
+    transparent 100%);
+  z-index: 1;
+  background-size: 200% 200%;
+  animation: shine 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.refresh-button {
+  background: #12B1D1;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.refresh-button:hover {
+  background: #0e8fa8;
+  transform: rotate(180deg);
+}
+
+.refresh-button:active {
+  transform: rotate(180deg) scale(0.95);
+}
+
+.captcha-status {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+  height: 20px;
+}
+
+.captcha-status .valid {
+  color: #2ecc71;
+  font-weight: 600;
+}
+
+.captcha-status .invalid {
+  color: #e74c3c;
+  font-weight: 600;
+}
