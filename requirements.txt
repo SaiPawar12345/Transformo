@@ -1,0 +1,6 @@
+Flask
+deep-translator
+python-docx
+fpdf
+PyPDF2
+Flask-Cors
