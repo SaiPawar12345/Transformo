@@ -4,6 +4,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import RefrshHandler from './RefrshHandler';
+import PdfToExcel from './components/PdfToExcel';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Home from './components/Home';
@@ -28,6 +29,14 @@ import JSONToCSV from './components/JSONToCSV';
 import PDFToJSON from './components/PDFToJSON';
 import OCR from './components/OCR';
 import MaskDocument from './components/MaskDocument';
+import PdfToWord from './components/PdfToWord';
+import PdfToPpt from './components/PdfToPpt';
+import PDFToTXT from './components/PDFToTXT';
+import PDFToRTF from './components/PDFToRTF';
+import PDFToHTML from './components/PDFToHTML';
+import PdfToEpub from './components/PdfToEpub';
+import ExcelToPdf from './components/ExcelToPdf';
+import PptToPdf from './components/PptToPdf';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -52,10 +61,12 @@ function App() {
 
         {/* Public Routes */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/pdf-to-word" element={<PdfToWord />} />
         <Route path="/pdf-to-jpg" element={<PDFToJPG />} />
         <Route path="/jpg-to-pdf" element={<JpgToPdfConverter />} />
         <Route path="/merge-pdf" element={<MergePDF />} />
         <Route path="/json-to-pdf" element={<JSONToPDF />} />
+        <Route path="/pdf-to-excel" element={<PdfToExcel/>}/>
         <Route path="/split-pdf" element={<SplitPDF />} />
         <Route path="/sp2txt" element={<Sp2txt />} />
         <Route path="/sentiment" element={<Sentiment />} />
@@ -71,6 +82,13 @@ function App() {
         <Route path="/json-to-csv" element={<JSONToCSV />} />
         <Route path="/pdf-to-json" element={<PDFToJSON />} />
         <Route path="/mask-document" element={<MaskDocument />} />
+        <Route path="/pdf-to-ppt" element={<PdfToPpt />} />
+        <Route path="/pdf-to-txt" element={<PDFToTXT />} />
+        <Route path="/pdf-to-rtf" element={<PDFToRTF />} />
+        <Route path="/excel-to-pdf" element={<ExcelToPdf />} />
+        <Route path="/ppt-to-pdf" element={<PptToPdf />} />
+        <Route path="/pdf-to-html" element={<PDFToHTML />} />
+        <Route path="/pdf-to-epub" element={<PdfToEpub />} />
 
         {/* Landing Page Route */}
         <Route path="/landing" element={<LandingPage />} />

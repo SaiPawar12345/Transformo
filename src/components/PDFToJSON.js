@@ -1,169 +1,146 @@
 import React, { useState } from 'react';
-import * as pdfjsLib from 'pdfjs-dist/build/pdf';
-import { NavBar } from './NavBar';
-import { FiUpload, FiDownload } from 'react-icons/fi';
+import * as pdfjsLib from 'pdfjs-dist';
+import { useNavigate } from 'react-router-dom';
 import './PDFToJSON.css';
 
-// Configure PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Initialize PDF.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 const PDFToJSON = () => {
-  const [pdfFile, setPdfFile] = useState(null);
-  const [jsonOutput, setJsonOutput] = useState('');
+  const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [converting, setConverting] = useState(false);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [fileName, setFileName] = useState('');
 
-  const extractPDFContent = async () => {
-    if (!pdfFile) {
-      setError('Please upload a PDF file first.');
-      return;
+  const handleBack = () => navigate('/');
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      setSelectedFile(file);
+      setError(null);
+    } else {
+      setError('Please select a valid PDF file');
+      setSelectedFile(null);
     }
+  };
 
-    setLoading(true);
-    setError(null);
+  const handleConvert = async () => {
+    if (!selectedFile) return;
 
     try {
-      // Read PDF file
-      const arrayBuffer = await pdfFile.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      setConverting(true);
+      setError(null);
 
-      // Extract content from all pages
-      const pagesContent = [];
+      const arrayBuffer = await selectedFile.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({
+        data: arrayBuffer,
+        useSystemFonts: true,
+        standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/standard_fonts/`
+      }).promise;
+
+      const documentData = {
+        title: selectedFile.name,
+        totalPages: pdf.numPages,
+        pages: []
+      };
 
       for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
         const page = await pdf.getPage(pageNum);
         const textContent = await page.getTextContent();
-
-        // Extract text and structure
-        const pageText = textContent.items
-          .map(item => item.str)
-          .filter(text => text.trim() !== '')
-          .join(' ');
-
-        pagesContent.push({
+        
+        documentData.pages.push({
           pageNumber: pageNum,
-          text: pageText,
-          wordCount: pageText.split(/\s+/).length,
-          characters: pageText.length
+          content: textContent.items.map(item => ({
+            text: item.str,
+            x: item.transform[4],
+            y: item.transform[5],
+            fontSize: item.fontSize,
+            fontName: item.fontName
+          }))
         });
       }
 
-      // Create a structured JSON output
-      const pdfJson = {
-        fileName: pdfFile.name,
-        totalPages: pdf.numPages,
-        pages: pagesContent,
-        metadata: await pdf.getMetadata().catch(() => ({}))
-      };
+      // Create and download JSON file
+      const blob = new Blob([JSON.stringify(documentData, null, 2)], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${selectedFile.name.replace('.pdf', '')}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
 
-      // Format and set JSON output
-      setJsonOutput(JSON.stringify(pdfJson, null, 2));
-      setError(null);
     } catch (error) {
-      console.error('PDF parsing error:', error);
-      setError('Error parsing PDF. Please make sure the file is not corrupted and try again.');
-      setJsonOutput('');
+      console.error('Conversion error:', error);
+      setError('Error converting PDF: ' + (error.message || 'Unknown error'));
     } finally {
-      setLoading(false);
+      setConverting(false);
     }
-  };
-
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    setError(null);
-    setJsonOutput('');
-    
-    if (file) {
-      if (file.type !== 'application/pdf') {
-        setError('Please upload a valid PDF file');
-        setPdfFile(null);
-        return;
-      }
-      
-      setFileName(file.name);
-      setPdfFile(file);
-    }
-  };
-
-  const downloadJson = () => {
-    if (!jsonOutput) return;
-    
-    const blob = new Blob([jsonOutput], { type: 'application/json;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName.replace('.pdf', '.json');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
   };
 
   return (
-    <>
-      <NavBar />
-      <div className="converter-container">
-        <div className="converter-content">
-          <div className="converter-header">
-            <h2>PDF to JSON Converter</h2>
-            <p>Convert your PDF files to structured JSON format</p>
-          </div>
-          
-          <div className="drop-zone">
-            <div className="icon-container">
-              <input 
-                type="file"
-                accept=".pdf"
-                onChange={handleFileUpload}
-                className="file-input"
-                id="file-input"
-              />
-              <label htmlFor="file-input">
-                <FiUpload size={50} />
-                <p>Drag & Drop PDF file here or click to browse</p>
-              </label>
-            </div>
-          </div>
+    <div className="converter-container">
+      <button onClick={handleBack} className="back-button">
+        ← Back to Home
+      </button>
 
-          {error && (
-            <div className="error-message">
-              {error}
-            </div>
-          )}
+      <div className="converter-card">
+        <h1>Convert PDF to JSON</h1>
+        <p className="subtitle">Transform your PDF documents into structured JSON files</p>
 
-          {pdfFile && !error && (
-            <div className="button-container">
-              <button 
-                onClick={extractPDFContent} 
-                className="convert-button"
-                disabled={loading}
-              >
-                {loading ? 'Converting...' : 'Convert to JSON'}
-              </button>
-            </div>
-          )}
+        <div className="upload-section">
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={handleFileChange}
+            className="file-input"
+            id="pdf-file-input"
+          />
+          <label htmlFor="pdf-file-input" className="choose-file-button">
+            Choose PDF File
+          </label>
 
-          {jsonOutput && !error && (
-            <div className="output-container">
-              <div className="output-header">
-                <h3>JSON Output</h3>
-                <button 
-                  onClick={downloadJson} 
-                  className="download-button"
-                >
-                  <FiDownload size={20} />
-                  Download JSON
-                </button>
-              </div>
-              <pre className="json-output">
-                {jsonOutput}
-              </pre>
+          {selectedFile && (
+            <div className="file-info">
+              <p>{selectedFile.name}</p>
+              <p className="file-size">({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)</p>
             </div>
           )}
         </div>
+
+        {error && <div className="error-message">{error}</div>}
+
+        {selectedFile && (
+          <button
+            onClick={handleConvert}
+            disabled={converting}
+            className="convert-button"
+          >
+            {converting ? 'Converting...' : 'Convert to JSON'}
+          </button>
+        )}
+
+        <div className="features-section">
+          <h2>Features:</h2>
+          <div className="features-grid">
+            <div className="feature-item">
+              Convert PDF to editable JSON format
+            </div>
+            <div className="feature-item">
+              Preserve text formatting and layout
+            </div>
+            <div className="feature-item">
+              Fast and accurate conversion
+            </div>
+            <div className="feature-item">
+              Easy to use interface
+            </div>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

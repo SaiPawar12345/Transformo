@@ -1,141 +1,286 @@
-import React, { useState } from "react";
-import axios from "axios";
-import './DocToPdf.css';
-import { NavBar } from './NavBar'; // Import the NavBar component
-import { FiUpload } from 'react-icons/fi';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DocToPdf = () => {
-  const [file, setFile] = useState(null);
+  const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [converting, setConverting] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  const handleBack = () => {
+    navigate('/');
+  };
+
   const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    
-    // Validate file type
-    if (selectedFile && selectedFile.name.toLowerCase().endsWith('.docx')) {
-      setFile(selectedFile);
+    const file = event.target.files[0];
+    if (file && file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      setSelectedFile(file);
       setError(null);
     } else {
-      setFile(null);
-      setError("Please select a valid .docx file");
+      setError('Please select a valid DOC/DOCX file');
+      setSelectedFile(null);
     }
   };
 
-  const handleUpload = async () => {
-    if (!file) {
-      setError("Please select a .docx file.");
+  const handleConversion = async () => {
+    if (!selectedFile) {
+      setError('Please select a file first');
       return;
     }
 
-    setLoading(true);
-    setError(null);
+    setConverting(true);
     setProgress(0);
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     try {
-      const response = await axios.post("http://localhost:5002/upload", formData, {
-        responseType: "blob",
-        onDownloadProgress: (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          setProgress(percentCompleted);
-        },
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        timeout: 30000 // 30 seconds timeout
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      const response = await fetch('http://localhost:5002/upload', {
+        method: 'POST',
+        body: formData,
       });
 
-      // Create a link to download the PDF
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute(
-        "download",
-        `${file.name.replace('.docx', '.pdf')}`
-      );
-      document.body.appendChild(link);
-      link.click();
-      
-      // Clean up
-      link.parentNode.removeChild(link);
-      window.URL.revokeObjectURL(url);
-
-    } catch (err) {
-      console.error("Conversion error:", err);
-      
-      if (err.response) {
-        // The request was made and the server responded with a status code
-        const errorData = await err.response.data.text();
-        setError(`Server Error: ${errorData || 'Unknown error'}`);
-      } else if (err.request) {
-        // The request was made but no response was received
-        setError("No response from server. Please check if the server is running.");
-      } else {
-        // Something happened in setting up the request
-        setError(`Error: ${err.message}`);
+      if (!response.ok) {
+        throw new Error('Conversion failed');
       }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = selectedFile.name.replace(/\.(doc|docx)$/i, '.pdf');
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      setProgress(100);
+    } catch (err) {
+      setError('Error converting file: ' + err.message);
     } finally {
-      setLoading(false);
-      setProgress(0);
+      setConverting(false);
     }
   };
 
   return (
-    <div>
-      <NavBar /> {/* Add the NavBar here */}
-      <div className="doc-to-pdf-container_1">
-        <div className="merge-content">
-          <div className="merge-header">
-            <h2 className="doc-to-pdf-header_2">DOCX to PDF</h2>
-            <p>Convert your Word documents to PDF format</p>
-          </div>
-          
-          <div className="drop-zone">
-            <div className="icon-container">
-              <input 
-                type="file" 
-                accept=".docx" 
-                onChange={handleFileChange}
-                className="doc-to-pdf-input_3"
-                id="file-input"
-              />
-              <label htmlFor="file-input">
-                <FiUpload size={50} />
-                <p>Drag & Drop DOCX files here or click to browse</p>
-              </label>
-            </div>
-          </div>
-          
-          {loading && (
-            <div className="doc-to-pdf-progress-container_5">
-              <div 
-                className="doc-to-pdf-progress-fill_6"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          )}
+    <div className="container">
+      <button onClick={handleBack} className="back-button">
+        ← Back to Home
+      </button>
 
-          <button 
-            onClick={handleUpload} 
-            disabled={loading || !file}
-            className="doc-to-pdf-button_4"
-          >
-            {loading ? "Converting..." : "Convert to PDF"}
-          </button>
+      <div className="converter-card">
+        <h1>Convert DOC to PDF</h1>
+        <p className="subtitle">Transform your Word documents into PDF format</p>
 
-          {error && (
-            <p className="doc-to-pdf-error_7">
-              {error}
-            </p>
+        <div className="upload-section">
+          <input
+            type="file"
+            accept=".doc,.docx"
+            onChange={handleFileChange}
+            className="file-input"
+            id="file-input"
+          />
+          <label htmlFor="file-input" className="choose-file-button">
+            Choose DOC File
+          </label>
+          {selectedFile && (
+            <p className="file-name">{selectedFile.name}</p>
           )}
         </div>
+
+        {error && <div className="error-message">{error}</div>}
+        
+        {converting && (
+          <div className="progress-bar">
+            <div className="progress" style={{ width: `${progress}%` }}></div>
+          </div>
+        )}
+
+        {selectedFile && !converting && (
+          <button onClick={handleConversion} className="convert-button">
+            Convert to PDF
+          </button>
+        )}
+
+        <div className="features-section">
+          <h2>Features:</h2>
+          <div className="features-grid">
+            <div className="feature-item">
+              Convert DOC/DOCX to PDF format
+            </div>
+            <div className="feature-item">
+              Preserve document formatting
+            </div>
+            <div className="feature-item">
+              Fast and accurate conversion
+            </div>
+            <div className="feature-item">
+              Easy to use interface
+            </div>
+          </div>
+        </div>
       </div>
+
+      <style jsx>{`
+        .container {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background-color: #1a1a1a;
+          padding: 20px;
+          position: relative;
+        }
+
+        .back-button {
+          position: absolute;
+          top: 20px;
+          left: 20px;
+          background: none;
+          border: none;
+          color: white;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          font-size: 16px;
+          padding: 10px;
+        }
+
+        .back-button:hover {
+          text-decoration: underline;
+        }
+
+        .converter-card {
+          background: white;
+          border-radius: 24px;
+          padding: 48px;
+          width: 100%;
+          max-width: 800px;
+          text-align: center;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+          color: #6c5ce7;
+          font-size: 36px;
+          margin: 0 0 12px 0;
+          font-weight: 600;
+        }
+
+        .subtitle {
+          color: #666;
+          font-size: 16px;
+          margin-bottom: 32px;
+        }
+
+        .upload-section {
+          margin: 32px 0;
+        }
+
+        .file-input {
+          display: none;
+        }
+
+        .choose-file-button {
+          background-color: #6c5ce7;
+          color: white;
+          padding: 12px 32px;
+          border-radius: 50px;
+          cursor: pointer;
+          display: inline-block;
+          font-size: 16px;
+          transition: background-color 0.2s;
+        }
+
+        .choose-file-button:hover {
+          background-color: #5b4cc4;
+        }
+
+        .file-name {
+          margin-top: 12px;
+          color: #666;
+        }
+
+        .convert-button {
+          background-color: #6c5ce7;
+          color: white;
+          padding: 12px 32px;
+          border: none;
+          border-radius: 50px;
+          cursor: pointer;
+          font-size: 16px;
+          margin: 20px 0;
+          transition: background-color 0.2s;
+        }
+
+        .convert-button:hover {
+          background-color: #5b4cc4;
+        }
+
+        .progress-bar {
+          width: 100%;
+          height: 8px;
+          background-color: #f0f0f0;
+          border-radius: 4px;
+          overflow: hidden;
+          margin: 20px 0;
+        }
+
+        .progress {
+          height: 100%;
+          background-color: #6c5ce7;
+          transition: width 0.3s ease;
+        }
+
+        .error-message {
+          color: #ff4757;
+          background-color: #ffe0e3;
+          padding: 12px;
+          border-radius: 8px;
+          margin: 20px 0;
+        }
+
+        .features-section {
+          margin-top: 48px;
+          text-align: left;
+        }
+
+        .features-section h2 {
+          color: #6c5ce7;
+          font-size: 20px;
+          margin-bottom: 24px;
+        }
+
+        .features-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
+        }
+
+        .feature-item {
+          background-color: #f8f7ff;
+          padding: 20px;
+          border-radius: 12px;
+          text-align: center;
+          color: #666;
+          font-size: 15px;
+        }
+
+        @media (max-width: 600px) {
+          .converter-card {
+            padding: 24px;
+          }
+
+          .features-grid {
+            grid-template-columns: 1fr;
+          }
+
+          h1 {
+            font-size: 28px;
+          }
+        }
+      `}</style>
     </div>
   );
 };

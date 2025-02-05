@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { jsPDF } from "jspdf";
-import 'jspdf-autotable';
+import axios from 'axios';
 
-const JSONToPDF = () => {
+const PptToPdf = () => {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState(null);
@@ -16,11 +15,14 @@ const JSONToPDF = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    if (file && (file.type === 'application/json' || file.name.endsWith('.json'))) {
+    if (file && (file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation' || 
+                 file.type === 'application/vnd.ms-powerpoint' ||
+                 file.name.endsWith('.pptx') || 
+                 file.name.endsWith('.ppt'))) {
       setSelectedFile(file);
       setError(null);
     } else {
-      setError('Please select a valid JSON file');
+      setError('Please select a valid PowerPoint file (.pptx or .ppt)');
       setSelectedFile(null);
     }
   };
@@ -35,85 +37,39 @@ const JSONToPDF = () => {
     setProgress(0);
 
     try {
-      // Read the file content
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          // Parse JSON data
-          const jsonData = JSON.parse(e.target.result);
-          
-          // Create PDF document
-          const doc = new jsPDF();
+      const formData = new FormData();
+      formData.append('file', selectedFile);
 
-          // Add title
-          doc.setFontSize(16);
-          doc.setTextColor(108, 92, 231); // Purple color
-          doc.text('JSON to PDF Conversion', 14, 15);
-          doc.setFontSize(10);
-          doc.setTextColor(0);
+      const response = await axios.post('http://localhost:5000/upload/ppt-to-pdf', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'blob',
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setProgress(percentCompleted);
+        },
+      });
 
-          // Convert JSON to table format
-          const tableData = [];
-          const parseObject = (obj, prefix = '') => {
-            Object.entries(obj).forEach(([key, value]) => {
-              const fullKey = prefix ? `${prefix}.${key}` : key;
-              if (Array.isArray(value)) {
-                value.forEach((item, index) => {
-                  if (typeof item === 'object' && item !== null) {
-                    parseObject(item, `${fullKey}[${index}]`);
-                  } else {
-                    tableData.push([`${fullKey}[${index}]`, JSON.stringify(item)]);
-                  }
-                });
-              } else if (typeof value === 'object' && value !== null) {
-                parseObject(value, fullKey);
-              } else {
-                tableData.push([fullKey, JSON.stringify(value)]);
-              }
-            });
-          };
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${selectedFile.name.replace(/\.(pptx|ppt)$/, '')}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
 
-          parseObject(jsonData);
-
-          // Generate table
-          doc.autoTable({
-            startY: 25,
-            head: [['Key', 'Value']],
-            body: tableData,
-            theme: 'grid',
-            styles: {
-              fontSize: 8,
-              cellPadding: 3,
-            },
-            headStyles: {
-              fillColor: [108, 92, 231], // Purple color
-              textColor: 255,
-              fontSize: 9,
-              fontStyle: 'bold',
-            },
-            alternateRowStyles: {
-              fillColor: [248, 247, 255], // Light purple background
-            },
-          });
-
-          // Save the PDF
-          doc.save(selectedFile.name.replace('.json', '.pdf'));
-          setProgress(100);
-        } catch (err) {
-          setError('Invalid JSON format: ' + err.message);
-        } finally {
-          setConverting(false);
-        }
-      };
-
-      reader.onerror = () => {
-        setError('Error reading file');
-        setConverting(false);
-      };
-
-      reader.readAsText(selectedFile);
+      setProgress(100);
+      setTimeout(() => {
+        setProgress(0);
+        setSelectedFile(null);
+      }, 2000);
     } catch (err) {
-      setError('Error converting file: ' + err.message);
+      setError('Error converting file. Please try again.');
+      console.error(err);
+    } finally {
       setConverting(false);
     }
   };
@@ -125,19 +81,19 @@ const JSONToPDF = () => {
       </button>
 
       <div className="converter-card">
-        <h1>Convert JSON to PDF</h1>
-        <p className="subtitle">Transform your JSON data into a formatted PDF document</p>
+        <h1>Convert PowerPoint to PDF</h1>
+        <p className="subtitle">Transform your PowerPoint presentations into PDF documents</p>
 
         <div className="upload-section">
           <input
             type="file"
-            accept=".json"
+            accept=".pptx,.ppt"
             onChange={handleFileChange}
             className="file-input"
             id="file-input"
           />
           <label htmlFor="file-input" className="choose-file-button">
-            Choose JSON File
+            Choose PowerPoint File
           </label>
           {selectedFile && (
             <p className="file-name">{selectedFile.name}</p>
@@ -162,16 +118,16 @@ const JSONToPDF = () => {
           <h2>Features:</h2>
           <div className="features-grid">
             <div className="feature-item">
-              Convert JSON to PDF format
+              Support for PPTX/PPT
             </div>
             <div className="feature-item">
-              Preserve data structure
+              Preserve animations
             </div>
             <div className="feature-item">
-              Clean data presentation
+              Maintain formatting
             </div>
             <div className="feature-item">
-              Easy to use interface
+              High-quality output
             </div>
           </div>
         </div>
@@ -341,4 +297,4 @@ const JSONToPDF = () => {
   );
 };
 
-export default JSONToPDF;
+export default PptToPdf;

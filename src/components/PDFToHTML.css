@@ -1,0 +1,134 @@
+.pdf-to-html-container {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.converter-card {
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 3rem;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.converter-card h1 {
+  color: #6c5ce7;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.choose-file-button {
+  background-color: #6c5ce7;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 1rem 0;
+}
+
+.choose-file-button:hover {
+  background-color: #5b4cdb;
+}
+
+.choose-file-button:disabled {
+  background-color: #a8a8a8;
+  cursor: not-allowed;
+}
+
+.selected-file {
+  margin: 1rem 0;
+  padding: 10px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.features-section {
+  margin-top: 3rem;
+  text-align: left;
+}
+
+.features-section h2 {
+  color: #6c5ce7;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.feature-item {
+  background: rgba(108, 92, 231, 0.1);
+  padding: 1rem;
+  border-radius: 10px;
+  color: #444;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 80px;
+}
+
+.converting-message {
+  margin-top: 1rem;
+  color: #6c5ce7;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .converter-card {
+    padding: 2rem;
+    margin: 2rem 1rem;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .converter-card h1 {
+    font-size: 2rem;
+  }
+}

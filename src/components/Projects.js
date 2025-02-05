@@ -41,11 +41,6 @@ export const Projects = () => {
           route: "/pdf-to-rtf"
         },
         {
-          title: "PDF to Pages",
-          description: "Convert PDFs to iWork Pages for macOS or iOS users.",
-          route: "/pdf-to-pages"
-        },
-        {
           title: "PDF to HTML",
           description: "Convert PDFs to HTML web pages.",
           route: "/pdf-to-html"
@@ -59,11 +54,6 @@ export const Projects = () => {
           title: "PDF to JSON",
           description: "Convert PDF files to structured JSON format.",
           route: "/pdf-to-json"
-        },
-        {
-          title: "OCR",
-          description: "Convert scanned PDFs and images to editable files (DOCX, XLSX, PPTX, TXT). OCR support for 20+ languages.",
-          route: "/ocr"
         }
       ]
     },

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { jsPDF } from "jspdf";
+import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 
-const JSONToPDF = () => {
+const ExcelToPdf = () => {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState(null);
@@ -16,11 +17,14 @@ const JSONToPDF = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    if (file && (file.type === 'application/json' || file.name.endsWith('.json'))) {
+    if (file && (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 
+                 file.type === 'application/vnd.ms-excel' ||
+                 file.name.endsWith('.xlsx') || 
+                 file.name.endsWith('.xls'))) {
       setSelectedFile(file);
       setError(null);
     } else {
-      setError('Please select a valid JSON file');
+      setError('Please select a valid Excel file (.xlsx or .xls)');
       setSelectedFile(null);
     }
   };
@@ -35,72 +39,49 @@ const JSONToPDF = () => {
     setProgress(0);
 
     try {
-      // Read the file content
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         try {
-          // Parse JSON data
-          const jsonData = JSON.parse(e.target.result);
-          
-          // Create PDF document
-          const doc = new jsPDF();
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+          const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
+          const doc = new jsPDF();
+          
           // Add title
           doc.setFontSize(16);
-          doc.setTextColor(108, 92, 231); // Purple color
-          doc.text('JSON to PDF Conversion', 14, 15);
+          doc.setTextColor(108, 92, 231);
+          doc.text('Excel to PDF Conversion', 14, 15);
           doc.setFontSize(10);
           doc.setTextColor(0);
-
-          // Convert JSON to table format
-          const tableData = [];
-          const parseObject = (obj, prefix = '') => {
-            Object.entries(obj).forEach(([key, value]) => {
-              const fullKey = prefix ? `${prefix}.${key}` : key;
-              if (Array.isArray(value)) {
-                value.forEach((item, index) => {
-                  if (typeof item === 'object' && item !== null) {
-                    parseObject(item, `${fullKey}[${index}]`);
-                  } else {
-                    tableData.push([`${fullKey}[${index}]`, JSON.stringify(item)]);
-                  }
-                });
-              } else if (typeof value === 'object' && value !== null) {
-                parseObject(value, fullKey);
-              } else {
-                tableData.push([fullKey, JSON.stringify(value)]);
-              }
-            });
-          };
-
-          parseObject(jsonData);
 
           // Generate table
           doc.autoTable({
             startY: 25,
-            head: [['Key', 'Value']],
-            body: tableData,
+            head: [jsonData[0]], // First row as headers
+            body: jsonData.slice(1), // Rest of the rows as data
             theme: 'grid',
             styles: {
               fontSize: 8,
               cellPadding: 3,
             },
             headStyles: {
-              fillColor: [108, 92, 231], // Purple color
+              fillColor: [108, 92, 231],
               textColor: 255,
               fontSize: 9,
               fontStyle: 'bold',
             },
             alternateRowStyles: {
-              fillColor: [248, 247, 255], // Light purple background
+              fillColor: [248, 247, 255],
             },
           });
 
           // Save the PDF
-          doc.save(selectedFile.name.replace('.json', '.pdf'));
+          doc.save(selectedFile.name.replace(/\.(xlsx|xls)$/, '.pdf'));
           setProgress(100);
         } catch (err) {
-          setError('Invalid JSON format: ' + err.message);
+          setError('Error converting file: ' + err.message);
         } finally {
           setConverting(false);
         }
@@ -111,7 +92,7 @@ const JSONToPDF = () => {
         setConverting(false);
       };
 
-      reader.readAsText(selectedFile);
+      reader.readAsArrayBuffer(selectedFile);
     } catch (err) {
       setError('Error converting file: ' + err.message);
       setConverting(false);
@@ -125,19 +106,19 @@ const JSONToPDF = () => {
       </button>
 
       <div className="converter-card">
-        <h1>Convert JSON to PDF</h1>
-        <p className="subtitle">Transform your JSON data into a formatted PDF document</p>
+        <h1>Convert Excel to PDF</h1>
+        <p className="subtitle">Transform your Excel spreadsheets into PDF documents</p>
 
         <div className="upload-section">
           <input
             type="file"
-            accept=".json"
+            accept=".xlsx,.xls"
             onChange={handleFileChange}
             className="file-input"
             id="file-input"
           />
           <label htmlFor="file-input" className="choose-file-button">
-            Choose JSON File
+            Choose Excel File
           </label>
           {selectedFile && (
             <p className="file-name">{selectedFile.name}</p>
@@ -162,13 +143,13 @@ const JSONToPDF = () => {
           <h2>Features:</h2>
           <div className="features-grid">
             <div className="feature-item">
-              Convert JSON to PDF format
+              Preserve table formatting
             </div>
             <div className="feature-item">
-              Preserve data structure
+              Support for XLSX/XLS
             </div>
             <div className="feature-item">
-              Clean data presentation
+              Maintain data integrity
             </div>
             <div className="feature-item">
               Easy to use interface
@@ -341,4 +322,4 @@ const JSONToPDF = () => {
   );
 };
 
-export default JSONToPDF;
+export default ExcelToPdf;

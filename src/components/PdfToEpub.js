@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { jsPDF } from "jspdf";
-import 'jspdf-autotable';
+import * as pdfjsLib from 'pdfjs-dist';
 
-const JSONToPDF = () => {
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
+const PdfToEpub = () => {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null);
   const [converting, setConverting] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [convertedEpub, setConvertedEpub] = useState(null);
 
   const handleBack = () => {
     navigate('/');
@@ -16,105 +18,87 @@ const JSONToPDF = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    if (file && (file.type === 'application/json' || file.name.endsWith('.json'))) {
+    if (file && file.type === 'application/pdf') {
       setSelectedFile(file);
       setError(null);
+      setConvertedEpub(null);
     } else {
-      setError('Please select a valid JSON file');
+      setError('Please select a valid PDF file');
       setSelectedFile(null);
     }
   };
 
   const handleConversion = async () => {
     if (!selectedFile) {
-      setError('Please select a file first');
+      setError('Please select a PDF file first');
       return;
     }
 
     setConverting(true);
     setProgress(0);
+    setError(null);
 
     try {
-      // Read the file content
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          // Parse JSON data
-          const jsonData = JSON.parse(e.target.result);
-          
-          // Create PDF document
-          const doc = new jsPDF();
+      const arrayBuffer = await selectedFile.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({
+        data: arrayBuffer,
+        useSystemFonts: true,
+        standardFontDataUrl: `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/standard_fonts/`
+      }).promise;
 
-          // Add title
-          doc.setFontSize(16);
-          doc.setTextColor(108, 92, 231); // Purple color
-          doc.text('JSON to PDF Conversion', 14, 15);
-          doc.setFontSize(10);
-          doc.setTextColor(0);
+      const totalPages = pdf.numPages;
+      let epubContent = '';
 
-          // Convert JSON to table format
-          const tableData = [];
-          const parseObject = (obj, prefix = '') => {
-            Object.entries(obj).forEach(([key, value]) => {
-              const fullKey = prefix ? `${prefix}.${key}` : key;
-              if (Array.isArray(value)) {
-                value.forEach((item, index) => {
-                  if (typeof item === 'object' && item !== null) {
-                    parseObject(item, `${fullKey}[${index}]`);
-                  } else {
-                    tableData.push([`${fullKey}[${index}]`, JSON.stringify(item)]);
-                  }
-                });
-              } else if (typeof value === 'object' && value !== null) {
-                parseObject(value, fullKey);
-              } else {
-                tableData.push([fullKey, JSON.stringify(value)]);
-              }
-            });
-          };
+      for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+        const page = await pdf.getPage(pageNum);
+        const textContent = await page.getTextContent();
+        
+        setProgress(Math.round((pageNum / totalPages) * 100));
 
-          parseObject(jsonData);
+        const pageText = textContent.items
+          .map(item => item.str)
+          .join(' ');
 
-          // Generate table
-          doc.autoTable({
-            startY: 25,
-            head: [['Key', 'Value']],
-            body: tableData,
-            theme: 'grid',
-            styles: {
-              fontSize: 8,
-              cellPadding: 3,
-            },
-            headStyles: {
-              fillColor: [108, 92, 231], // Purple color
-              textColor: 255,
-              fontSize: 9,
-              fontStyle: 'bold',
-            },
-            alternateRowStyles: {
-              fillColor: [248, 247, 255], // Light purple background
-            },
-          });
+        epubContent += `<h2>Page ${pageNum}</h2>\\n${pageText}\\n\\n`;
+      }
 
-          // Save the PDF
-          doc.save(selectedFile.name.replace('.json', '.pdf'));
-          setProgress(100);
-        } catch (err) {
-          setError('Invalid JSON format: ' + err.message);
-        } finally {
-          setConverting(false);
-        }
-      };
+      const epubTemplate = `<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>${selectedFile.name.replace('.pdf', '')}</title>
+  <style type="text/css">
+    body { font-family: serif; }
+    h2 { text-align: center; margin: 2em 0; }
+  </style>
+</head>
+<body>
+  ${epubContent}
+</body>
+</html>`;
 
-      reader.onerror = () => {
-        setError('Error reading file');
-        setConverting(false);
-      };
-
-      reader.readAsText(selectedFile);
+      const epubBlob = new Blob([epubTemplate], { type: 'application/epub+zip' });
+      const epubUrl = URL.createObjectURL(epubBlob);
+      setConvertedEpub(epubUrl);
+      setProgress(100);
     } catch (err) {
       setError('Error converting file: ' + err.message);
+      console.error('Conversion error:', err);
+    } finally {
       setConverting(false);
+    }
+  };
+
+  const handleDownload = () => {
+    if (convertedEpub) {
+      const link = document.createElement('a');
+      link.href = convertedEpub;
+      link.download = selectedFile.name.replace('.pdf', '.epub');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(convertedEpub);
+      setConvertedEpub(null);
     }
   };
 
@@ -125,23 +109,20 @@ const JSONToPDF = () => {
       </button>
 
       <div className="converter-card">
-        <h1>Convert JSON to PDF</h1>
-        <p className="subtitle">Transform your JSON data into a formatted PDF document</p>
+        <h1>Convert PDF to EPUB</h1>
+        <p className="subtitle">Transform your PDF documents into EPUB format</p>
 
         <div className="upload-section">
           <input
             type="file"
-            accept=".json"
+            accept=".pdf"
             onChange={handleFileChange}
             className="file-input"
             id="file-input"
           />
           <label htmlFor="file-input" className="choose-file-button">
-            Choose JSON File
+            Choose PDF File
           </label>
-          {selectedFile && (
-            <p className="file-name">{selectedFile.name}</p>
-          )}
         </div>
 
         {error && <div className="error-message">{error}</div>}
@@ -152,9 +133,9 @@ const JSONToPDF = () => {
           </div>
         )}
 
-        {selectedFile && !converting && (
-          <button onClick={handleConversion} className="convert-button">
-            Convert to PDF
+        {convertedEpub && (
+          <button onClick={handleDownload} className="download-button">
+            Download EPUB
           </button>
         )}
 
@@ -162,13 +143,13 @@ const JSONToPDF = () => {
           <h2>Features:</h2>
           <div className="features-grid">
             <div className="feature-item">
-              Convert JSON to PDF format
+              Convert PDF to EPUB format
             </div>
             <div className="feature-item">
-              Preserve data structure
+              Preserve text formatting and layout
             </div>
             <div className="feature-item">
-              Clean data presentation
+              Fast and accurate conversion
             </div>
             <div className="feature-item">
               Easy to use interface
@@ -253,27 +234,6 @@ const JSONToPDF = () => {
           background-color: #5b4cc4;
         }
 
-        .file-name {
-          margin-top: 12px;
-          color: #666;
-        }
-
-        .convert-button {
-          background-color: #6c5ce7;
-          color: white;
-          padding: 12px 32px;
-          border: none;
-          border-radius: 50px;
-          cursor: pointer;
-          font-size: 16px;
-          margin: 20px 0;
-          transition: background-color 0.2s;
-        }
-
-        .convert-button:hover {
-          background-color: #5b4cc4;
-        }
-
         .progress-bar {
           width: 100%;
           height: 8px;
@@ -287,6 +247,22 @@ const JSONToPDF = () => {
           height: 100%;
           background-color: #6c5ce7;
           transition: width 0.3s ease;
+        }
+
+        .download-button {
+          background-color: #6c5ce7;
+          color: white;
+          padding: 12px 32px;
+          border: none;
+          border-radius: 50px;
+          cursor: pointer;
+          font-size: 16px;
+          margin: 20px 0;
+          transition: background-color 0.2s;
+        }
+
+        .download-button:hover {
+          background-color: #5b4cc4;
         }
 
         .error-message {
@@ -341,4 +317,4 @@ const JSONToPDF = () => {
   );
 };
 
-export default JSONToPDF;
+export default PdfToEpub;
