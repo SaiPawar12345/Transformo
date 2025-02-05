@@ -1,0 +1,6 @@
+Flask
+werkzeug
+PyPDF2
+python-docx
+vaderSentiment
+Flask-Cors
