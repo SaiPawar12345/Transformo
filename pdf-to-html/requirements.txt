@@ -1,0 +1,8 @@
+Flask==3.0.0
+Flask-Cors==4.0.0
+PyMuPDF==1.23.7
+Pillow==10.1.0
+beautifulsoup4==4.12.2
+Werkzeug==3.0.1
+python-magic==0.4.27
+gunicorn==21.2.0
