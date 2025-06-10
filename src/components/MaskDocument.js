@@ -134,7 +134,7 @@ const MaskDocument = () => {
   const identifySensitiveInfo = async (text) => {
     try {
       const model = genAI.getGenerativeModel({ 
-        model: "gemini-pro",
+        model: "gemini-1.5-flash",
         safetySettings: [
           {
             category: 'HARM_CATEGORY_HARASSMENT',
