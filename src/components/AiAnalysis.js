@@ -28,7 +28,7 @@ import Tesseract from 'tesseract.js';
 // Set PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
-const API_KEY = "AIzaSyD6olpfeXKuZiACMF5awOE_HxOI4ifOlZM";
+const API_KEY = "AIzaSyDheZ6Bx0x7YCJr2fh8a5NocmLE0LdqIkU";
 
 const ChatWithPDF = () => {
   const navigate = useNavigate();
